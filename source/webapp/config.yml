@@ -1,0 +1,21 @@
+app:
+  port: default
+  environment: development
+
+api:
+  routes: 
+    "Applegreen UK": "/api/v1/com/Applegreen_UK"
+    "Ascona Group": "/api/v1/com/Ascona_Group"
+    "Asda": "/api/v1/com/Asda"
+    "bp": "/api/v1/com/bp"
+    "Esso Tesco Alliance": "/api/v1/com/Esso_Tesco_Alliance"
+    "JET Retail UK": "/api/v1/com/JETRetailUK"
+    "Karan Retail Ltd": "/api/v1/com/Karan_Retail_Ltd"
+    "Morrisons": "/api/v1/com/Morrisons"
+    "Moto": "/api/v1/com/Moto"
+    "Motor Fuel Group": "/api/v1/com/Motor_Fuel_Group"
+    "Rontec": "/api/v1/com/Rontec"
+    "Sainsburys": "/api/v1/com/Sainsburys"
+    "SGN": "/api/v1/com/SGN"
+    "Shell": "/api/v1/com/Shell"
+    "Tesco": "/api/v1/com/Tesco"
