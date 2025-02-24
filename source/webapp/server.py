@@ -6,6 +6,7 @@ from flask import Flask, jsonify
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.api.worker import UpdateFuelPrice
+from utils.api.worker import RecoverFuelPriceByCom
 
 app = Flask(__name__)
 
@@ -27,16 +28,11 @@ def api_landing():
 @app.route('/api/v1/com/<company>', methods=['GET'])
 def api_com_lookup(company):
     company_name = company.lower().replace(' ', '_').replace('/', '_')
+    company_data, status_code = RecoverFuelPriceByCom(company_name)
 
-    folder_path = os.path.join(os.path.dirname(__file__), '..', 'utils', 'api', 'worker-output')
-    file_path = os.path.join(folder_path, f'{company_name}.json')
+    if status_code == 200:
+        return company_data
 
-    if os.path.exists(file_path):
-        with open(file_path, 'r') as file:
-            company_data = json.load(file)
-
-        return jsonify(company_data)
-    
     else:
         data = {
             'type': 'Error',
