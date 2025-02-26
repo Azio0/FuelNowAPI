@@ -1,12 +1,13 @@
 import os
 import sys
 import yaml
-import json
 from flask import Flask, jsonify
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.api.worker import UpdateFuelPrice
 from utils.api.worker import RecoverFuelPriceByCom
+from utils.filters.worker import RecoverFilterParms
+from utils.filters.filters import Outcode_Only
 
 app = Flask(__name__)
 
@@ -37,6 +38,26 @@ def api_com_lookup(company):
         data = {
             'type': 'Error',
             'message': f'The API was unable to recover data for company name {company}.'
+        }
+
+        return jsonify(data)
+
+@app.route('/api/v1/com/<company>/filter/<filter>/postcode/<postcode>')
+def api_com_filter_lookup(company, filter, postcode):
+    company_name = company.lower().replace(' ', '_').replace('/', '_')
+    company_data, status_code_rfpbc = RecoverFuelPriceByCom(company_name)
+
+    command, status_code_rfp = RecoverFilterParms(filter)
+    
+    if status_code_rfpbc and status_code_rfp == 200:
+        filtered_data = jsonify(eval(command))
+
+        return filtered_data
+
+    else:
+        data = {
+            'type': 'Error',
+            'message': f'The API was unable to recover data for your request, please check the company name and filter.'
         }
 
         return jsonify(data)

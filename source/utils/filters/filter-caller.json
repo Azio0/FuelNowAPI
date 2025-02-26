@@ -1,0 +1,7 @@
+[
+    {
+        "name": "Outcode-Only",
+        "description": "Returns results that match the Outcode (e.g TN40).",
+        "exec_command": "Outcode_Only(company_data, postcode)"
+    }
+]

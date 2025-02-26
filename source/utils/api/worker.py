@@ -2,14 +2,13 @@ import os
 import requests
 import json
 
-os.makedirs('../utils/api/worker-output', exist_ok=True)
-
 with open('../utils/api/datasets.json', 'r') as dataFile:
     dataJSON = json.load(dataFile)
 
 def UpdateFuelPrice():
     for entry in dataJSON:
         try:
+            os.makedirs('../utils/api/worker-output', exist_ok=True)
             response = requests.get(entry['url'], timeout=10)
 
             if response.status_code == 200:
