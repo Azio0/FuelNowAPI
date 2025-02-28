@@ -2,6 +2,10 @@ app:
   port: default
   environment: development
 
+redis:
+  ip: localhost
+  port: 6379
+
 api:
   routes: 
     "Applegreen UK": "/api/v1/com/Applegreen_UK"

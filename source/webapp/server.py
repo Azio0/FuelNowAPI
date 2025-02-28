@@ -7,9 +7,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.api.worker import UpdateFuelPrice
 from utils.api.worker import RecoverFuelPriceByCom
 from utils.filters.worker import RecoverFilterParms
-from utils.filters.filters import Outcode_Only
+from utils.redis.worker import SetupRedis
 
 app = Flask(__name__)
+redis_client, limiter = SetupRedis(app)
 
 with open('config.yml', 'r') as file:
     config = yaml.safe_load(file)
@@ -18,6 +19,7 @@ def startup():
     UpdateFuelPrice()
 
 @app.route('/api/v1/', methods=['GET'])
+@limiter.limit("10/minute")
 def api_landing():
     data = {
         'type': 'Information',
@@ -27,6 +29,7 @@ def api_landing():
     return jsonify(data)
 
 @app.route('/api/v1/com/<company>', methods=['GET'])
+@limiter.limit("10/minute")
 def api_com_lookup(company):
     company_name = company.lower().replace(' ', '_').replace('/', '_')
     company_data, status_code = RecoverFuelPriceByCom(company_name)
@@ -43,6 +46,7 @@ def api_com_lookup(company):
         return jsonify(data)
 
 @app.route('/api/v1/com/<company>/filter/<filter>/postcode/<postcode>')
+@limiter.limit("10/minute")
 def api_com_filter_lookup(company, filter, postcode):
     company_name = company.lower().replace(' ', '_').replace('/', '_')
     company_data, status_code_rfpbc = RecoverFuelPriceByCom(company_name)
