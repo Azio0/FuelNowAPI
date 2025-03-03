@@ -1,12 +1,13 @@
 import os
 import sys
 import yaml
-from flask import Flask, jsonify
+from flask import Flask, redirect, jsonify
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.api.worker import UpdateFuelPrice
 from utils.api.worker import RecoverFuelPriceByCom
 from utils.filters.worker import RecoverFilterParms
+from utils.filters.filters import Outcode_Only, Incode_Only, City
 from utils.redis.worker import SetupRedis
 
 app = Flask(__name__)
@@ -17,6 +18,11 @@ with open('config.yml', 'r') as file:
 
 def startup():
     UpdateFuelPrice()
+
+@app.route('/', methods=['GET'])
+@limiter.limit("10/minute")
+def index():
+    return redirect('/api/v1/', code=307)
 
 @app.route('/api/v1/', methods=['GET'])
 @limiter.limit("10/minute")
@@ -51,6 +57,7 @@ def api_com_filter_lookup(company, filter, postcode):
     company_name = company.lower().replace(' ', '_').replace('/', '_')
     company_data, status_code_rfpbc = RecoverFuelPriceByCom(company_name)
 
+    filter = filter.lower().replace('-', '_')
     command, status_code_rfp = RecoverFilterParms(filter)
     
     if status_code_rfpbc and status_code_rfp == 200:

@@ -1,7 +1,17 @@
 [
     {
-        "name": "Outcode-Only",
+        "name": "outcode_only",
         "description": "Returns results that match the Outcode (e.g TN40).",
         "exec_command": "Outcode_Only(company_data, postcode)"
+    },
+    {
+        "name": "incode_only",
+        "description": "Returns results that match the Incode (e.g 1DF).",
+        "exec_command": "Incode_Only(company_data, postcode)"
+    },
+    {
+        "name": "city",
+        "description": "Returns results that match the City (e.g London).",
+        "exec_command": "City(company_data, postcode)"
     }
 ]
