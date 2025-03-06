@@ -172,3 +172,6 @@ cython_debug/
 
 # Worker.py API output files
 worker-output
+
+# Redis output files
+*.rdb
