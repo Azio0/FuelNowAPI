@@ -19,7 +19,7 @@ def UpdateFuelPrice():
                 with open(company_filename, 'w') as company_file:
                     json.dump(data, company_file, indent=4)
             else:
-                print(f'[Worker Error] Failed to fetch data from {entry['company']}.')
+                raise Exception(f'Failed to fetch data from {entry['company']}')
 
         except Exception as error:
             print(f'[Worker Error] {error}.')
@@ -38,7 +38,7 @@ def RecoverFuelPriceByCom(company_name):
             return company_data, 200
         
         else:
-            return f"[Worker Error] The API was unable to recover data for company name {company_name}", 404
+            raise Exception(f"The API was unable to recover data for company name {company_name}")
 
     except Exception as error:
         return f'[Worker Error] {error}.', 500
