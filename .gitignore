@@ -175,3 +175,6 @@ worker-output
 
 # Redis output files
 *.rdb
+
+# VS Code files
+.vscode
