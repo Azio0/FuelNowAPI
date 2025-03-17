@@ -4,10 +4,9 @@ import yaml
 from flask import Flask, redirect, jsonify
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from utils.api.worker import UpdateFuelPrice
-from utils.api.worker import RecoverFuelPriceByCom
+from utils.api.worker import UpdateFuelPrice, RecoverFuelPriceByCom
 from utils.filters.worker import RecoverFilterParms
-from utils.filters.filters import Outcode_Only, Incode_Only, City
+from utils.filters.filters import *
 from utils.redis.worker import SetupRedis
 
 app = Flask(__name__)
@@ -84,10 +83,13 @@ def api_error_handle(error):
     return jsonify(data)
 
 if __name__ == '__main__':
-    startup()
-
+    runStartup=False
     portToggle=5000
     debugToggle=False
+
+    if config['app']['runStartup'] == True:
+        runStartup=True
+        startup()
 
     if config['app']['environment'] == 'development':
         debugToggle=True

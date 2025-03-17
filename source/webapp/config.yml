@@ -1,6 +1,7 @@
 app:
   port: default
   environment: development
+  runStartup: false
 
 redis:
   ip: localhost
